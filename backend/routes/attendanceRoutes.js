@@ -11,7 +11,7 @@ const { protect, authorize } = require('../middleware/auth');
 const router = express.Router();
 
 router.get('/', protect, getAllAttendance);
-router.post('/', protect, authorize('manager', 'admin'), markAttendance);
+router.post('/', protect, markAttendance);
 router.get('/employee/:employeeId', protect, getEmployeeAttendance);
 router.get('/stats/:employeeId', protect, getAttendanceStats);
 router.put('/:id', protect, authorize('manager', 'admin'), updateAttendance);
