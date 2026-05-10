@@ -26,6 +26,7 @@ yarn.lock
 # Build
 /build
 /dist
+/frontend/build
 
 # Testing
 /coverage
