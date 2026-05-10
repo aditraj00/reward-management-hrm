@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { adminService } from '../services/apiService';
 import '../styles/admin.css';
 
@@ -14,11 +14,7 @@ function ManageUsers() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
 
-  useEffect(() => {
-    fetchUsers();
-  }, [filters]);
-
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       setLoading(true);
       const response = await adminService.getAllUsers(filters);
@@ -28,7 +24,11 @@ function ManageUsers() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { adminService, employeeService } from '../services/apiService';
 import '../styles/admin.css';
 
@@ -26,27 +26,16 @@ function ManageAttendance() {
 
   const [summary, setSummary] = useState([]);
 
-  useEffect(() => {
-    fetchEmployees();
-  }, []);
-
-  useEffect(() => {
-    if (activeTab === 'view') {
-      fetchAttendanceRecords();
-      fetchAttendanceSummary();
-    }
-  }, [activeTab, filters]);
-
-  const fetchEmployees = async () => {
+  const fetchEmployees = useCallback(async () => {
     try {
       const response = await employeeService.getAllEmployees({ role: '' });
       setEmployees(response.data.data);
     } catch (err) {
       setError(err.message);
     }
-  };
+  }, []);
 
-  const fetchAttendanceRecords = async () => {
+  const fetchAttendanceRecords = useCallback(async () => {
     try {
       setLoading(true);
       const response = await adminService.getAllAttendanceRecords(filters);
@@ -56,16 +45,27 @@ function ManageAttendance() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters]);
 
-  const fetchAttendanceSummary = async () => {
+  const fetchAttendanceSummary = useCallback(async () => {
     try {
       const response = await adminService.getAttendanceSummary({ month: filters.month });
       setSummary(response.data.data);
     } catch (err) {
       setError(err.message);
     }
-  };
+  }, [filters.month]);
+
+  useEffect(() => {
+    fetchEmployees();
+  }, [fetchEmployees]);
+
+  useEffect(() => {
+    if (activeTab === 'view') {
+      fetchAttendanceRecords();
+      fetchAttendanceSummary();
+    }
+  }, [activeTab, fetchAttendanceRecords, fetchAttendanceSummary]);
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;

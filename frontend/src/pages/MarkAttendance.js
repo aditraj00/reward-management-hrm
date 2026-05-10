@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { attendanceService } from '../services/apiService';
 import '../styles/mark-attendance.css';
 
@@ -20,11 +20,7 @@ function MarkAttendance() {
     remarks: ''
   });
 
-  useEffect(() => {
-    fetchAttendanceData();
-  }, []);
-
-  const fetchAttendanceData = async () => {
+  const fetchAttendanceData = useCallback(async () => {
     try {
       setLoading(true);
       const [statsRes, attendanceRes] = await Promise.all([
@@ -40,7 +36,11 @@ function MarkAttendance() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId]);
+
+  useEffect(() => {
+    fetchAttendanceData();
+  }, [fetchAttendanceData]);
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;

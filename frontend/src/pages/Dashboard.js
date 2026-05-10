@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { employeeService, rewardService, attendanceService, feedbackService, authService } from '../services/apiService';
+import { rewardService, attendanceService, authService } from '../services/apiService';
 import '../styles/dashboard.css';
 
 function Dashboard() {
