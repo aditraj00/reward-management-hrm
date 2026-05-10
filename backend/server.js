@@ -43,12 +43,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve uploaded files
-app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
+
 
 // Serve frontend build in production
-const frontendBuildPath = path.join(__dirname, '../frontend/build');
-app.use(express.static(frontendBuildPath));
+
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -73,14 +71,7 @@ app.use('/api/rewards', rewardRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/admin', adminRoutes);
 
-// SPA fallback for frontend routes
-app.get('*', (req, res, next) => {
-  if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
-    return next();
-  }
 
-  res.sendFile(path.join(frontendBuildPath, 'index.html'));
-});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
