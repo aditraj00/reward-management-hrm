@@ -269,10 +269,10 @@ function ManageAttendance() {
                 </thead>
                 <tbody>
                   {summary.length > 0 ? (
-                    summary.map(emp => (
-                      <tr key={emp.employee._id}>
-                        <td>{emp.employee.firstName} {emp.employee.lastName}</td>
-                        <td>{emp.employee.designation}</td>
+                    summary.map((emp, index) => (
+                      <tr key={emp.employee?._id || `summary-${index}`}>
+                        <td>{emp.employee ? `${emp.employee.firstName} ${emp.employee.lastName}` : 'Unknown employee'}</td>
+                        <td>{emp.employee?.designation || '-'}</td>
                         <td>{emp.total}</td>
                         <td className="present-count">{emp.present}</td>
                         <td className="absent-count">{emp.absent}</td>
@@ -306,9 +306,9 @@ function ManageAttendance() {
                 </thead>
                 <tbody>
                   {attendanceRecords.length > 0 ? (
-                    attendanceRecords.map(record => (
+                    attendanceRecords.map((record) => (
                       <tr key={record._id}>
-                        <td>{record.employee.firstName} {record.employee.lastName}</td>
+                        <td>{record.employee ? `${record.employee.firstName} ${record.employee.lastName}` : 'Unknown employee'}</td>
                         <td>{new Date(record.date).toLocaleDateString()}</td>
                         <td><span className={`status-badge ${record.status}`}>{record.status}</span></td>
                         <td>{record.checkInTime || '-'}</td>
