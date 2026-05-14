@@ -1,19 +1,17 @@
-name: Node.js CI
+name: Simple GitHub Action
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  build:
+  check:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 18
-
-    - run: npm install --force
+      - name: Success Message
+        run: echo "GitHub Action is working successfully!"
